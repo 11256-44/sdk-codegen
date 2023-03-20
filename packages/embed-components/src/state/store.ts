@@ -23,6 +23,17 @@
  SOFTWARE.
 
  */
-export * from './Theme'
-export * from './QuickEmbed'
-export * from './state'
+import { createStore } from '@looker/redux'
+import { defaultThemesState, themesSlice } from '../Theme'
+import { defaultFactoryState, factorySlice } from './slice'
+
+export const store = createStore({
+  preloadedState: {
+    factory: defaultFactoryState,
+    themes: defaultThemesState,
+  },
+  reducer: {
+    factory: factorySlice.reducer,
+    themes: themesSlice.reducer,
+  },
+})
