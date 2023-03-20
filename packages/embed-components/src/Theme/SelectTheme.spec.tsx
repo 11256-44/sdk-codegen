@@ -23,6 +23,12 @@
  SOFTWARE.
 
  */
-export * from './Theme'
-export * from './QuickEmbed'
-export * from './state'
+import React from 'react'
+import { renderWithProvider } from '../test-utils'
+import { SelectTheme } from './SelectTheme'
+
+describe('SelectTheme', () => {
+  it('renders', () => {
+    renderWithProvider(<SelectTheme />)
+  })
+})
