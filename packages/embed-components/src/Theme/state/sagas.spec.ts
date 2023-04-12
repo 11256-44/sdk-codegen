@@ -32,6 +32,7 @@ import {
 } from '@looker/embed-services'
 import { Looker40SDK as LookerSDK } from '@looker/sdk'
 import type { ITheme } from '@looker/sdk'
+import type { IAPIMethods } from '@looker/sdk-rtl'
 import { session } from '../../test-utils'
 import {
   defaultThemesState,
@@ -43,7 +44,7 @@ import * as sagas from './sagas'
 
 describe('SelectTheme sagas', () => {
   let sagaTester: ReduxSagaTester<any>
-  const sdk = new LookerSDK(session)
+  const sdk: IAPIMethods = new LookerSDK(session)
 
   beforeEach(() => {
     createFactory(sdk)

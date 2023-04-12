@@ -54,7 +54,6 @@ describe('ThemeService', () => {
         await sdk.ok(sdk.create_theme(t))
       }
     }
-    await sdk.authSession.logout()
   }
 
   const removeTestThemes = async () => {
@@ -64,7 +63,6 @@ describe('ThemeService', () => {
         await sdk.ok(sdk.delete_theme(searched[0].id!))
       }
     }
-    await sdk.authSession.logout()
   }
 
   beforeAll(async () => {
@@ -73,6 +71,10 @@ describe('ThemeService', () => {
     // get themes from instance to have their ids
     testThemes = await sdk.ok(all_themes(sdk, 'id, name'))
   }, timeout)
+
+  afterAll(async () => {
+    await sdk.authSession.logout()
+  })
 
   describe('getAll', () => {
     it('gets and caches', async () => {
@@ -118,7 +120,7 @@ describe('ThemeService', () => {
       const cachedTheme = themes[0]
       const expectedName = cachedTheme.name
       cachedTheme.name += 'cached'
-      const actual = await service.get(cachedTheme.id!, false)
+      const actual = await service.get(cachedTheme.id!, { itemCache: false })
       expect(actual.name).toEqual(expectedName)
     })
   })

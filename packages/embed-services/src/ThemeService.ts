@@ -33,7 +33,7 @@ import {
 } from '@looker/sdk'
 import type { IAPIMethods } from '@looker/sdk-rtl'
 import { ItemList } from './ItemList'
-import type { IEntityService, IItemList } from './ItemList'
+import type { IEntityService, IItemList, GetOptions } from './ItemList'
 import type { ServiceCreatorFunc } from './ServiceFactory'
 import { getFactory } from './ServiceFactory'
 
@@ -51,15 +51,11 @@ class ThemeService extends ItemList<ITheme> implements IThemeService {
   /**
    * Get theme by id
    * @param id of theme to retrieve
-   * @param cache determines if item should be retrieved from cache if possible
-   * @param fields to retrieve
+   * @param options to get
    */
-  async get(
-    id: string,
-    cache = true,
-    fields?: string
-  ): Promise<Partial<ITheme>> {
+  async get(id: string, options?: GetOptions): Promise<Partial<ITheme>> {
     // TODO: implement logic to check if requested fields are already cached.
+    const cache = this.getCacheDefault(options)
     this.clearIfExpired()
     let item = this.indexedItems[id]
 
@@ -67,7 +63,7 @@ class ThemeService extends ItemList<ITheme> implements IThemeService {
       return item
     }
 
-    item = await this.sdk.ok(theme(this.sdk, id, fields))
+    item = await this.sdk.ok(theme(this.sdk, id, options?.fields))
 
     if (item) {
       this.items = [...this.items, item]
